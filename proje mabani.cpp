@@ -143,7 +143,11 @@ else if (command == "balance"){
 	}
 }  
 else if( commandd == "help"){ 
+      showUserMenu();
+      string name;
       
+    cin>>name;
+    help(name);
 }
 }
 
