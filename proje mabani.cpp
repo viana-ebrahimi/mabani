@@ -129,6 +129,15 @@ else if( command == " buy item"){
        buyItem(name);
 } 
 else if (command == "balance"){ 
+    cout<<" to update youre wallet press 1:"<<endl;
+    int num;
+    cin>>num;
+    if(num == 1){ 
+     updateWallet();
+	} 
+	else{ 
+	 break;
+	}
 }
 
 void createUsers(User people[])
