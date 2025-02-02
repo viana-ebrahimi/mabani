@@ -127,6 +127,8 @@ else if( command == " buy item"){
        tring name;
        cin>>name;
        buyItem(name);
+} 
+else if (command == "balance"){ 
 }
 
 void createUsers(User people[])
