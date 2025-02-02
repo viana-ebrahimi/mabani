@@ -109,7 +109,8 @@ void buyItem( string name ){
 } 
 void updateWallet(){ 
            //todo
-}
+} 
+void 
 
 void showUserMenu(){ 
              cout << "\nList of all admin commands:\n";
