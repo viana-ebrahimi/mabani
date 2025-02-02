@@ -106,6 +106,9 @@ void showItem(string name){
 } 
 void buyItem( string name ){ 
          //todo
+} 
+void updateWallet(){ 
+           //todo
 }
 
 void showUserMenu(){ 
@@ -138,6 +141,10 @@ else if (command == "balance"){
 	else{ 
 	 break;
 	}
+}  
+else if( commandd == "help"){ 
+      
+}
 }
 
 void createUsers(User people[])
