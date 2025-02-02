@@ -93,6 +93,20 @@ void showAdminMenu()
                 cout << "command not found" << endl;
         }
 }
+void showItem(string name){ 
+//            for(int i=0 ; i< size ; i++){
+//               cout << itemeslist[i] << endl; 
+//               
+//			   } 
+//			  
+//			   if( itemeslist[i] == name){
+//			   	cout<< name << ','<< price?
+//			   }
+//			} todo
+} 
+void buyItem( string name ){ 
+         //todo
+}
 
 void showUserMenu(){ 
              cout << "\nList of all admin commands:\n";
@@ -105,16 +119,14 @@ void showUserMenu(){
         string command;
         cin >> command;
             if(command == "show item"){ 
-               for(int i=0 ; i< size ; i++){
-               cout << itemeslist[i] << endl; 
-               
-			   } 
-			   string name;
-			   cin>> name;
-			   if( itemeslist[i] == name){
-			   	cout<< itemeslist
-			   }
-			}
+               string name;
+               cin>> name ;
+               showItem(name);
+} 
+else if( command == " buy item"){ 
+       tring name;
+       cin>>name;
+       buyItem(name);
 }
 
 void createUsers(User people[])
