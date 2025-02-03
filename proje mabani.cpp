@@ -7,13 +7,13 @@ struct User
         string username;
         string password;
         string type;
-        float wallet;
+       string wallet;
 };
 
 struct Item
 {
         string name;
-        double price;
+        string price;
 };
 
 struct myAnbarData
@@ -21,22 +21,51 @@ struct myAnbarData
         const int numberOfPeople = 5;
         User people[5];
         Item *itemsList = nullptr;
-        int itemesCount=0;
-};
+        int size = 4 ;
+}; 
 
 void showUserMenu(const string &inputN , User people[] , int size );
 void showAdminMenu(const string &inputN , User people[ ] , int size);
 void createUsers(User people[]);
+void initializeItems(myAnbarData &anbar);
 void login(User people[], int size);
 void addItem(const string &item, int price);
 
+void initializeItems( myAnbarData *itemlist  , int size ){ 
+                   itemesList[0]= { " apple" , "50000"} ;
+                   itemesList[1]= {"lemon" ,"60000"} ;
+                   itemesList[2]= {" banana" , "100000"} ;
+                   itemesList[3]= { "orange" , "80000"} ;
+                   
+}
+void deleteItems(myAnbarData *itemesList , int size) {
+    delete[] myAnbarData.itemsList; 
+}
+
+void addItem( string item , string price , myAnbarData * itemlist )
+
+{  
+    
 
 
-void addItem(const string &item, int price)
-{
-        cout << "item : " << item << "price: " << price << "added " << endl;
-//        itemesCount++;
-        //todo
+        for (int i = 0; i < ؟؟ ; i++) {
+         nweItemList[i].name = item ;
+         nweItemList[i].price = price ;
+         
+         cout<<  nweItemList[i].name <<  ',' << nweItemList[i].price << ','<<"added "<<endl;
+           ؟؟
+        }
+
+     
+        delete[] myAnbarData.itemsList;
+
+    
+    }
+
+}
+
+
+ 
 } 
 void removeItem(const string &item, int price){ 
             cout << "item : " << item << "price: " << price << "removed " << endl;
@@ -47,17 +76,15 @@ void changePrice(int price , int newPrice){
 	//todo
 }
  
-void wallet( int price , string name , User people[ ] , int size){ 
-          for(int i=0 ; i<size ; i++){ 
-             if( name == people[i].username  ){ 
-                people[i].wallet += price;
+void credit ( int price , string name , User people[ ] , int size ) { 
+          for ( int i=0 ; i<size ; i++ ) { 
+             if ( name == people[i].username ) { 
+                people[i].wallet += price ;
 			 }
-		  } 	cout<< "wallet " << name << price << " increased"  << endl;
-		  
-	
-	       
-	       	//todo
-}
+		  } 	cout << " wallet " << name << price << " increased "  << endl ;
+
+} 
+
 void showAdminMenu(const string &inputN , User people[ ] , int size)
 {
         cout << "\nList of all admin commands:\n";
@@ -97,7 +124,7 @@ void showAdminMenu(const string &inputN , User people[ ] , int size)
 		       int increase ; string name;
 		       cin >> increase;
 		       cin >> name;
-		       wallet( increase , name , people , size );
+		       credit( increase , name , people , size );
 		 }
         else
         {
