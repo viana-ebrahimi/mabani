@@ -25,12 +25,18 @@ struct myAnbarData
         
 }; 
 
+
+
+
 void showUserMenu(const string &inputN , User people[] , int size );
 void showAdminMenu(const string &inputN , User people[ ] , int size);
 void createUsers(User people[]);
 void initializeItems(myAnbarData &anbar);
 void login(User people[], int size);
 void addItem(const string &item, int price);
+
+
+
 
 void initializeItems ( myAnbarData & data ){ 
 
@@ -43,6 +49,9 @@ void initializeItems ( myAnbarData & data ){
                    data.itemsList[3]= { "orange" , "80000"} ;
                    
 }
+
+
+
 void deleteItems(myAnbarData &data) {
     delete[] data.itemsList; 
      data.itemsList = nullptr;
@@ -126,6 +135,9 @@ Item removeItem(const string &item, myAnbarData & data){
 	}
 }
 
+
+
+
 void return( const Item & dlt , MyAnbarData & data){ 
           
             Item* newItemsList = new Item[data.itemsCount + 1];
@@ -143,13 +155,21 @@ void return( const Item & dlt , MyAnbarData & data){
 
     cout << "Product " << d << " restored successfully!" << endl;
           
- }           
+ }     
+ 
+ 
+       
 
 
 void changePrice(int price , int newPrice){
 	cout<< "price" << price << "updated to" <<newPrice << endl;
 	//todo
-}
+} 
+
+
+
+
+
  
 void credit ( int price , string name , User people[ ] , int size ) { 
           for ( int i=0 ; i<size ; i++ ) { 
@@ -159,6 +179,12 @@ void credit ( int price , string name , User people[ ] , int size ) {
 		  } 	cout << " wallet " << name << price << " increased "  << endl ;
 
 } 
+
+
+
+
+
+
 
 void showAdminMenu(const string &inputN , User people[ ] , int size)
 {
@@ -184,10 +210,8 @@ void showAdminMenu(const string &inputN , User people[ ] , int size)
         {
                 string item;
                 cin >> item;
-                int price;
-                cin >> price;
                 
-                removeItem( item);
+                removeItem ( item );
         } 
         
         else if( command == "price"){
@@ -208,20 +232,28 @@ void showAdminMenu(const string &inputN , User people[ ] , int size)
                 cout << "command not found" << endl;
         }
 }
+
+
+
+
 void showItem(string name){ 
-//            for(int i=0 ; i < size ; i++) {
-//               cout << itemeslist[i].name << endl; 
-//               
-//			   } 
-//			  
-//			   if( itemeslist[i].name == name){
-//			   	cout<< name << ','<< itemesList[i].price;
-//			   }
-//			} todo
+//todo
 } 
+
+
+
+
+
+
 void buyItem( string name ){ 
          //todo
 } 
+
+
+
+
+
+
 void showBalance( const string &inputN , User people [ ] , int size ){ 
                 for(int i=0 ; i< 5 ; i++){ 
                 if(inputN == people[i].username ){
@@ -230,6 +262,12 @@ void showBalance( const string &inputN , User people [ ] , int size ){
 				}
 				}
 } 
+
+
+
+
+
+
 
 void help( string name){ 
   if(name == "show item"){ 
@@ -247,6 +285,11 @@ void help( string name){
   } 
 
 }
+
+
+
+
+
 
 void showUserMenu( const string &inputN , User people[ ] , int size ){ 
              cout << "\nList of all admin commands:\n";
@@ -295,6 +338,8 @@ void createUsers(User people[])
         people[4] = {"user3", "5555", "user" , };
 }
 
+
+
 void login(User people[], int size)
 {
         string inputN;
@@ -337,6 +382,11 @@ void login(User people[], int size)
         }
 }
 
+
+
+
+
+
 void startProgram()
 {
         const int numberOfUsers = 5;
@@ -344,6 +394,9 @@ void startProgram()
         createUsers(anbar.people);
         login(anbar.people, numberOfUsers);
 }
+
+
+
 
 int main()
 {
