@@ -21,7 +21,8 @@ struct myAnbarData
         const int numberOfPeople = 5;
         User people[5];
         Item *itemsList = nullptr;
-        int size = 4 ;
+        int itemsCount = 0 ;
+        
 }; 
 
 void showUserMenu(const string &inputN , User people[] , int size );
@@ -31,46 +32,120 @@ void initializeItems(myAnbarData &anbar);
 void login(User people[], int size);
 void addItem(const string &item, int price);
 
-void initializeItems( myAnbarData *itemlist  , int size ){ 
-                   itemesList[0]= { " apple" , "50000"} ;
-                   itemesList[1]= {"lemon" ,"60000"} ;
-                   itemesList[2]= {" banana" , "100000"} ;
-                   itemesList[3]= { "orange" , "80000"} ;
+void initializeItems ( myAnbarData & data ){ 
+
+                  data.itemsCount=4;
+                  data.itemsList = new Item[data.itemsCount];
+                  
+                   data.itemsList[0]= { " apple" , "50000"} ;
+                   data.itemsList[1]= {"lemon" ,"60000"} ;
+                   data.itemsList[2]= {" banana" , "100000"} ;
+                   data.itemsList[3]= { "orange" , "80000"} ;
                    
 }
-void deleteItems(myAnbarData *itemesList , int size) {
-    delete[] myAnbarData.itemsList; 
+void deleteItems(myAnbarData &data) {
+    delete[] data.itemsList; 
+     data.itemsList = nullptr;
+     data.itemsCount=0;
+    
+    
 }
 
-void addItem( string item , string price , myAnbarData * itemlist )
+void addItem(  const string &item ,const string & price , myAnbarData & data )
+{        
 
-{  
+          Item *newItemsList = new Item[data.itemsCount + 1] ;
+          
+            for(int i=0 ; i < data.itemsCount ; i++){ 
+            
+                newItemsList [i] = data.itemsList[i];
+			}
+             newItemsList[data.itemsCount] = {item, price};
+             
+    delete[] data.itemsList;
     
-
-
-        for (int i = 0; i < ؟؟ ; i++) {
-         nweItemList[i].name = item ;
-         nweItemList[i].price = price ;
-         
-         cout<<  nweItemList[i].name <<  ',' << nweItemList[i].price << ','<<"added "<<endl;
-           ؟؟
-        }
-
-     
-        delete[] myAnbarData.itemsList;
+    data.itemsList = newItemsList;
+    
+    data.itemsCount++;
+    
+    cout << "item " << item << " added successfully." << endl;
 
     
-    }
-
 }
 
 
  
-} 
-void removeItem(const string &item, int price){ 
-            cout << "item : " << item << "price: " << price << "removed " << endl;
-//todo
+
+Item removeItem(const string &item, myAnbarData & data){ 
+
+    Item dlt;
+    
+    int index = -1;
+    for (int i = 0; i < data.itemsCount; i++)
+    {
+        if (data.itemsList[i].name == item)
+        {
+            index = i;
+            break;
+        }
+    }
+    if (index == -1)
+    {
+        cout << "Item " << item << " not found." << endl;
+       
+    } 
+    else{ 
+    
+     dlt = data.itemsList[index];
+    	
+    Item *newItemsList = new Item[data.itemsCount - 1];
+    
+    for (int i = 0, j = 0; i < data.itemsCount; i++)
+    {
+        if (i != index)
+        {
+            newItemsList[j] = data.itemsList[i];
+            j++;
+        }
+    }
+    
+    delete[] data.itemsList;
+    data.itemsList = newItemsList;
+    data.itemsCount--;
+    cout << "item " << item << " removed successfully." << endl;
+	}
+	int choice;
+	
+	cout<< " Press 1 if you want to return the product :" << endl ;
+	
+	   cin >> choice;
+	   
+	if( choice == 1){ 
+	
+	  return( dlt );
+	}
 }
+
+void return( const Item & dlt , MyAnbarData & data){ 
+          
+            Item* newItemsList = new Item[data.itemsCount + 1];
+
+    for (int i = 0; i < data.itemsCount; i++) {
+        newItemsList[i] = data.itemsList[i];
+    }
+
+    newItemsList[data.itemsCount] = dlt ;
+    
+    data.itemsCount++;
+
+    delete[] data.itemsList;
+    data.itemsList = newItemsList;
+
+    cout << "Product " << d << " restored successfully!" << endl;
+          
+ }           
+
+
 void changePrice(int price , int newPrice){
 	cout<< "price" << price << "updated to" <<newPrice << endl;
 	//todo
@@ -111,8 +186,10 @@ void showAdminMenu(const string &inputN , User people[ ] , int size)
                 cin >> item;
                 int price;
                 cin >> price;
-                removeItem(item, price);
+                
+                removeItem( item);
         } 
+        
         else if( command == "price"){
               int price; int newPrice;
               cin>>price;
