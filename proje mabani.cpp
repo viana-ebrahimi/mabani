@@ -7,6 +7,7 @@ struct User
         string username;
         string password;
         string type;
+        float wallet;
 };
 
 struct Item
@@ -20,6 +21,7 @@ struct myAnbarData
         const int numberOfPeople = 5;
         User people[5];
         Item *itemsList = nullptr;
+        int itemesCount=0;
 };
 
 void showUserMenu();
@@ -33,6 +35,7 @@ void addItem(const string &item, int price);
 void addItem(const string &item, int price)
 {
         cout << "item : " << item << "price: " << price << "added " << endl;
+//        itemesCount++;
         //todo
 } 
 void removeItem(const string &item, int price){ 
@@ -44,7 +47,7 @@ void changePrice(int price , int newPrice){
 	//todo
 }
 void wallet(int price , string name){
-	       	cout<< "wallet " << name << increase << " increased"  << endl;
+	       	cout<< "wallet " << name << price << " increased"  << endl;
 	       	//todo
 }
 void showAdminMenu()
@@ -76,14 +79,14 @@ void showAdminMenu()
                 removeItem(item, price);
         } 
         else if( command == "price"){
-              int price , int newPrice;
+              int price; int newPrice;
               cin>>price;
-              cin>>newprice;
+              cin>> newPrice;
               changePrice(price,newPrice);
 		} 
 		 
 		 else if(command == "credit"){ 
-		       int increase , string name;
+		       int increase ; string name;
 		       cin>>increase;
 		       cin>>name;
 		       wallet(increase , name );
@@ -94,27 +97,42 @@ void showAdminMenu()
         }
 }
 void showItem(string name){ 
-//            for(int i=0 ; i< size ; i++){
-//               cout << itemeslist[i] << endl; 
+//            for(int i=0 ; i < size ; i++) {
+//               cout << itemeslist[i].name << endl; 
 //               
 //			   } 
 //			  
-//			   if( itemeslist[i] == name){
-//			   	cout<< name << ','<< price?
+//			   if( itemeslist[i].name == name){
+//			   	cout<< name << ','<< itemesList[i].price;
 //			   }
 //			} todo
 } 
 void buyItem( string name ){ 
          //todo
 } 
-void updateWallet(){ 
-           //todo
+void showBalance( const string &inputN ,  float userWallet ){ 
+
+               cout << inputN << " youre current balance is:" << userWallet << endl ;
+        
 } 
 void help( string name){ 
-  // todo
+  if(name == "show item"){ 
+    cout<< " Show you availible items  and you can search your item ."<<endl;
+    
+  } 
+  else if(name == "buy item"){ 
+  cout<< "Can you buy your item"<<endl;
+  } 
+  else if( name == "balance"){ 
+          cout<< " You can see your wallet inventory ."<<endl;
+  } 
+  else if( name == " help"){ 
+  cout<< "To help you. "<<endl;
+  } 
+
 }
 
-void showUserMenu(){ 
+void showUserMenu( const string &inputN , float userWallet){ 
              cout << "\nList of all admin commands:\n";
         cout << "  show item      \n";
         cout << "  buy item     \n";
@@ -130,37 +148,33 @@ void showUserMenu(){
                showItem(name);
 } 
 else if( command == " buy item"){ 
-       tring name;
+       string name;
        cin>>name;
        buyItem(name);
 } 
 else if (command == "balance"){ 
-    cout<<" to update youre wallet press 1:"<<endl;
-    int num;
-    cin>>num;
-    if(num == 1){ 
-     updateWallet();
+     showBalance(inputN , userWallet);
 	} 
-	else{ 
-	 break;
-	}
-}  
-else if( commandd == "help"){ 
+
+  
+else if ( command == "help"){ 
       showUserMenu();
       string name;
       
     cin>>name;
     help(name);
-}
-}
+
+	}}
+
+
 
 void createUsers(User people[])
 {
-        people[0] = {"ali", "1234", "admin"};
-        people[1] = {"nava", "4321", "admin"};
-        people[2] = {"user1", "7777", "user"};
-        people[3] = {"user2", "4444", "user"};
-        people[4] = {"user3", "5555", "user"};
+        people[0] = {"ali", "1234", "admin" , "140000"};
+        people[1] = {"nava", "4321", "admin" ,"50000"};
+        people[2] = {"user1", "7777", "user" , " 52000"};
+        people[3] = {"user2", "4444", "user" , "130000" };
+        people[4] = {"user3", "5555", "user" , "43000"};
 }
 
 void login(User people[], int size)
@@ -168,6 +182,7 @@ void login(User people[], int size)
         string inputN;
         string inputP;
         string type;
+        float userWallet;
         cout << "Enter your username: " << endl;
         cout << "*If you are admin enter your name, and if you are user enter 'user'*" << endl;
         cin >> inputN;
@@ -180,6 +195,8 @@ void login(User people[], int size)
                 {
                         loggedIn = true;
                         type = people[i].type;
+                        userWallet=people[i].wallet;
+                        
                         break;
                 }
         }
@@ -192,7 +209,7 @@ void login(User people[], int size)
                 }
                 else if (type == "user")
                 {
-                        showUserMenu();
+                        showUserMenu(inputN , userWallet);
                 }
         }
         else
