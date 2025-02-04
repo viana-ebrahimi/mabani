@@ -35,6 +35,22 @@ void createUsers(User people[]);
 void initializeItems(myAnbarData &anbar);
 void login(User people[], int size);
 void addItem(const string &item, int price);
+void showUserMenu(const string &inputN, User people[], int size, myAnbarData &data);
+void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &data);
+void createUsers(User people[]);
+void initializeItems(myAnbarData &anbar);
+void login(User people[], int size);
+void addItem(const string &item, const string &price, myAnbarData &data);
+void deleteItems(myAnbarData &data);
+Item removeItem(const string &item, myAnbarData &data);
+void renameItem(const string &oldName, const string &newName, myAnbarData &data);
+void changePrice(myAnbarData &data, const string &newPrice, const string &name);
+void credit(int price, const string &name, User people[], int size);
+void showItem(myAnbarData &data);
+void buyItem(const string &itemName, myAnbarData &data, User people[], int userCount, const string &username);
+void showBalance(const string &inputN, User people[], int size);
+void help(const string &name);
+
 
 
 
