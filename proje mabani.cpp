@@ -267,17 +267,35 @@ void showItem(myAnbarData &data ){
               	 if(data.itemsList[i].name == name){ 
               	    cout<< data.itemsList[i].name <<','<<data.itemsList[i].price <<endl ;
 				   }
-			  }
-
+				   }
 } 
 
 
 
-
-
-
-void buyItem( string name ){ 
-         //todo
+void buyItem( const string &name , myAnbarData &data , User &people , const string inputN  ){ 
+         string price;
+        for(int i=0 ; i<size ; i++){ 
+        
+          if(data.myAnbarData[i].name == name ){ 
+          
+           price= data.myAnbarData[i].price ; 
+		  }
+		} 
+		 for(int i=0 ; i<size  ; i++){ 
+		     if(people.people[i].name == inputN){
+		     	
+		     	if(price > people.people[i].wallet ) { 
+		     	
+		     	   cout << " Inventory is not enough !" <<endl;
+				 }
+				 
+				 else{
+		           people.people[i].wallet-= price;
+				 }
+			 }
+		} 
+		
+		
 } 
 
 
@@ -305,12 +323,15 @@ void help( string name){
     cout<< " Show you availible items  and you can search your item ."<<endl;
     
   } 
+  
   else if(name == "buy item"){ 
   cout<< "Can you buy your item"<<endl;
   } 
+  
   else if( name == "balance"){ 
           cout<< " You can see your wallet inventory ."<<endl;
   } 
+  
   else if( name == " help"){ 
   cout<< "To help you. "<<endl;
   } 
@@ -340,7 +361,7 @@ void showUserMenu( const string &inputN , User people[ ] , int size ){
 else if( command == " buy item") { 
        string name;
        cin>>name;
-       buyItem(name);
+       buyItem(name , inputN);
 } 
 
 else if (command == "balance") { 
