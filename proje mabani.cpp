@@ -158,7 +158,14 @@ void return( const Item & dlt , MyAnbarData & data){
  }     
  
  
-       
+       void rename( const string &name , myAnbarData &data){
+	          for(int i=0 ; i< size ; i++){ 
+	             if(data.itemsList[i] == name){ 
+	               data.itemsList[i].name = name;
+				 }
+			  } 
+             cout << " name updated !"<<endl;
+	   } 
 
 
 void changePrice( myAnbarData &data , string newPrice , const string  &name ){ 
@@ -220,6 +227,11 @@ void showAdminMenu(const string &inputN , User people[ ] , int size , myAnbarDat
                 
                 removeItem ( item );
         } 
+        else if (command == "rename "){ 
+               string name;
+               cin>>name ;
+               rename(name , myAnbarData &data )
+		}
         
         else if( command == "price"){
                string newPrice;
@@ -244,7 +256,14 @@ void showAdminMenu(const string &inputN , User people[ ] , int size , myAnbarDat
 
 
 
-void showItem(string name){ 
+void showItem(myAnbarData &data ){ 
+            for(int i=0 ; i< size ; i++){
+            	cout<< data.itemslist[i];
+			} 
+			cout<< " What are you looking for?" <<endl
+            string name;
+              cin >> name;
+              for(int i=0 ; i< size )
 //todo
 } 
 
@@ -310,9 +329,8 @@ void showUserMenu( const string &inputN , User people[ ] , int size ){
         string command;
         cin >> command;
             if(command == "show item"){ 
-               string name;
-               cin>> name ;
-               showItem(name);
+             
+               showItem(myAnbarData &data);
 } 
 
 else if( command == " buy item") { 
