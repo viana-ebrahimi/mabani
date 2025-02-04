@@ -258,13 +258,17 @@ void showAdminMenu(const string &inputN , User people[ ] , int size , myAnbarDat
 
 void showItem(myAnbarData &data ){ 
             for(int i=0 ; i< size ; i++){
-            	cout<< data.itemslist[i];
+            	cout<< data.itemsList[i];
 			} 
 			cout<< " What are you looking for?" <<endl
             string name;
               cin >> name;
-              for(int i=0 ; i< size ; i++)
-//todo
+              for(int i=0 ; i< size ; i++){
+              	 if(data.itemsList[i].name == name){ 
+              	    cout<< data.itemsList[i].name <<','<<data.itemsList[i].price <<endl ;
+				   }
+			  }
+
 } 
 
 
