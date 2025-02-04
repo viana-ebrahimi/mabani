@@ -263,7 +263,7 @@ void showItem(myAnbarData &data ){
 			cout<< " What are you looking for?" <<endl
             string name;
               cin >> name;
-              for(int i=0 ; i< size )
+              for(int i=0 ; i< size ; i++)
 //todo
 } 
 
