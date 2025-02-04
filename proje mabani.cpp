@@ -8,6 +8,7 @@ struct User
         string password;
         string type;
        string wallet;
+       string list;
 };
 
 struct Item
@@ -86,7 +87,6 @@ void addItem(  const string &item ,const string & price , myAnbarData & data )
  
 
 Item removeItem(const string &item, myAnbarData & data){ 
-
     Item dlt;
     
     int index = -1;
@@ -132,10 +132,10 @@ Item removeItem(const string &item, myAnbarData & data){
 	if( choice == 1){ 
 	
 	  return( dlt );
-	}
-}
-
-
+  
+  
+  
+  } 
 
 
 void return( const Item & dlt , MyAnbarData & data){ 
@@ -153,7 +153,7 @@ void return( const Item & dlt , MyAnbarData & data){
     delete[] data.itemsList;
     data.itemsList = newItemsList;
 
-    cout << "Product " << d << " restored successfully!" << endl;
+    cout << "Product " << dlt << " restored successfully!" << endl;
           
  }     
  
@@ -161,9 +161,16 @@ void return( const Item & dlt , MyAnbarData & data){
        
 
 
-void changePrice(int price , int newPrice){
+void changePrice( myAnbarData &data , string newPrice , const string  &name ){ 
+for(int i=0 ; i< size ; i++){ 
+    if(data.itemsList[i].name == name){
+    	data.itemsList[i].price = newPrice ;
+    	
+	} 
+}
+          
 	cout<< "price" << price << "updated to" <<newPrice << endl;
-	//todo
+	
 } 
 
 
@@ -171,7 +178,7 @@ void changePrice(int price , int newPrice){
 
 
  
-void credit ( int price , string name , User people[ ] , int size ) { 
+void credit ( int price , string name , User people[ ] , int size ){ 
           for ( int i=0 ; i<size ; i++ ) { 
              if ( name == people[i].username ) { 
                 people[i].wallet += price ;
@@ -186,7 +193,7 @@ void credit ( int price , string name , User people[ ] , int size ) {
 
 
 
-void showAdminMenu(const string &inputN , User people[ ] , int size)
+void showAdminMenu(const string &inputN , User people[ ] , int size , myAnbarData &data  )
 {
         cout << "\nList of all admin commands:\n";
         cout << "  add        \n";
@@ -215,10 +222,11 @@ void showAdminMenu(const string &inputN , User people[ ] , int size)
         } 
         
         else if( command == "price"){
-              int price; int newPrice;
-              cin>>price;
+               string newPrice;
               cin>> newPrice;
-              changePrice(price,newPrice);
+              string name;
+              cin >> name; 
+              changePrice( myAnbarData &data ,newPrice ,name);
 		} 
 		 
 		 else if(command == "credit"){ 
