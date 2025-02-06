@@ -9,12 +9,14 @@ struct User
         string type;
        string wallet;
        string list;
+       int size = 5;
 };
 
 struct Item
 {
         string name;
         string price;
+        int kiloo;
 };
 
 struct myAnbarData
@@ -60,10 +62,17 @@ void initializeItems ( myAnbarData & data ){
                   data.itemsCount=4;
                   data.itemsList = new Item[data.itemsCount];
                   
-                   data.itemsList[0]= { " apple" , "50000"} ;
-                   data.itemsList[1]= {"lemon" ,"60000"} ;
-                   data.itemsList[2]= {" banana" , "100000"} ;
-                   data.itemsList[3]= { "orange" , "80000"} ;
+                   data.itemsList[0]= { " apple" , "50000" , 5} ;
+                   data.itemsList[1]= {"lemon" ,"60000" , 5} ;
+                   data.itemsList[2]= {" banana" , "100000", 5} ;
+                   data.itemsList[3]= { "orange" , "80000", 6} ;
+                   data.itemsList [4]= { "kiwi" , "90000" , 6} ; 
+                   data.itemsList [5]= { " Cucumber" , "400000" , 10} ;
+                   data.itemsList [6]= { "Pomegranate" , "50000" , 4} ;
+                   data.itemsList [7]= { "Onion"  ,"500000" , 7} ; 
+                   data.itemsList [8]= {"Potatoes" , "60000" , 8} ;
+                   data.itemsList [9]= {"Persimmon " , "80000" , 8} ;
+                 
                    
 }
 
@@ -78,15 +87,17 @@ void deleteItems(myAnbarData &data) {
 }
 
 void addItem(  const string &item ,const string & price , myAnbarData & data )
-{        
+{        int k =0 ;
+cin >> k;
+
 
           Item *newItemsList = new Item[data.itemsCount + 1] ;
           
             for(int i=0 ; i < data.itemsCount ; i++){ 
-            
+                
                 newItemsList [i] = data.itemsList[i];
 			}
-             newItemsList[data.itemsCount] = {item, price};
+             newItemsList[data.itemsCount] = {item , price , k };
              
     delete[] data.itemsList;
     
@@ -101,77 +112,68 @@ void addItem(  const string &item ,const string & price , myAnbarData & data )
 
 
  
-
-Item removeItem(const string &item, myAnbarData & data){ 
-    Item dlt;
-    
+ 
+void removeItem(const string &item, myAnbarData &data) {
     int index = -1;
-    for (int i = 0; i < data.itemsCount; i++)
-    {
-        if (data.itemsList[i].name == item)
-        {
+    for (int i = 0; i < data.itemsCount; i++) {
+        if (data.itemsList[i].name == item) {
             index = i;
             break;
         }
     }
-    if (index == -1)
-    {
+    
+    if (index == -1) {
         cout << "Item " << item << " not found." << endl;
-       
-    } 
-    else{ 
+        return;
+    }
+
+    Item removed = data.itemsList[index];
+    Item* newItemsList = new Item[data.itemsCount - 1];
     
-     dlt = data.itemsList[index];
-    	
-    Item *newItemsList = new Item[data.itemsCount - 1];
-    
-    for (int i = 0, j = 0; i < data.itemsCount; i++)
-    {
-        if (i != index)
-        {
+    for (int i = 0, j = 0; i < data.itemsCount; i++) {
+        if (i != index) {
             newItemsList[j] = data.itemsList[i];
             j++;
         }
     }
     
-    delete[] data.itemsList;
+    delete[] data.itemsList; 
     data.itemsList = newItemsList;
-    data.itemsCount--;
-    cout << "item " << item << " removed successfully." << endl;
-	}
-	int choice;
-	
-	cout<< " Press 1 if you want to return the product :" << endl ;
-	
-	   cin >> choice;
-	   
-	if( choice == 1){ 
-	
-	  return( dlt );
-  
-  
-  
-  } 
+    data.itemsCount--; 
+    cout << "Item " << item << " removed successfully." << endl;
+
+    int choice;
+    cout << "Press 1 if you want to return the product: ";
+    cin >> choice;
 
 
-void return( const Item & dlt , MyAnbarData & data){ 
-          
-            Item* newItemsList = new Item[data.itemsCount + 1];
-
-    for (int i = 0; i < data.itemsCount; i++) {
-        newItemsList[i] = data.itemsList[i];
+    if (choice == 1) {
+        addItem(removed.name, removed.price,  muAnbarData &data);
+        cout << "Product " << removed.name << " restored successfully!" << endl;
     }
+}
 
-    newItemsList[data.itemsCount] = dlt ;
-    
-    data.itemsCount++;
+  
 
-    delete[] data.itemsList;
-    data.itemsList = newItemsList;
 
-    cout << "Product " << dlt << " restored successfully!" << endl;
-          
- }     
+//void return( const Item & dlt , MyAnbarData & data){ 
+//          
+//            Item* newItemsList = new Item[data.itemsCount + 1];
+//
+//    for (int i = 0; i < data.itemsCount; i++) {
+//        newItemsList[i] = data.itemsList[i];
+//    }
+//
+//    newItemsList[data.itemsCount] = dlt ;
+//    
+//    data.itemsCount++;
+//
+//    delete[] data.itemsList;
+//    data.itemsList = newItemsList;
+//
+//    cout << "Product " << dlt << " restored successfully!" << endl;
+//          
+// }     
  
  
        void rename( const string &name , myAnbarData &data){
@@ -184,8 +186,8 @@ void return( const Item & dlt , MyAnbarData & data){
 	   } 
 
 
-void changePrice( myAnbarData &data , string newPrice , const string  &name ){ 
-for(int i=0 ; i< size ; i++){ 
+void changePrice( myAnbarData &data ,  const string &newPrice , const string  &name ){ 
+for(int i=0 ; i< data.itemsCount ; i++){ 
     if(data.itemsList[i].name == name){
     	data.itemsList[i].price = newPrice ;
     	
@@ -244,9 +246,9 @@ void showAdminMenu(const string &inputN , User people[ ] , int size , myAnbarDat
                 removeItem ( item );
         } 
         else if (command == "rename "){ 
-               string name;
-               cin>>name ;
-               rename(name , myAnbarData &data )
+               string oldName;
+               cin >> oldName ;
+               rename(oldName , myAnbarData &data )
 		}
         
         else if( command == "price"){
@@ -307,8 +309,9 @@ void buyItem( const string &name , myAnbarData &data , User &people , const stri
 				 
 				 else{
 		           people.people[i].wallet-= price;
+		           data.itemsList[i].kiloo -- ;
 				 }
-			 }
+			 } 
 		} 
 		
 		
