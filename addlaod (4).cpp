@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
+#include <fstream>
 
 using namespace std;
 
@@ -47,6 +48,58 @@ void showItem(myAnbarData &data);
 void buyItem(const string &itemName, myAnbarData &data, User people[], int userCount, const string &username);
 void showBalance(const string &inputN, User people[], int size);
 void help(const string &name);
+void saveDataToFile(const myAnbarData &data);
+void readDataFromFile(myAnbarData &data);
+
+
+
+void saveDataToFile(const myAnbarData &data)
+{
+    ofstream out("data.txt");
+    if (!out)
+    {
+        cerr << "Error opening file for writing." << endl;
+        return;
+    }
+    out << data.itemsCount << "\n";
+    for (int i = 0; i < data.itemsCount; i++)
+    {
+        out << data.anbarItemsList[i].name << "\n";
+        out << data.anbarItemsList[i].price << "\n";
+        out << data.anbarItemsList[i].kiloo << "\n";
+    }
+    out.close();
+    cout << "Data saved to file successfully." << endl;
+}
+
+void readDataFromFile(myAnbarData &data)
+{
+    ifstream in("data.txt");
+    if (!in)
+    {
+        cerr << " file nor found." << endl;
+        return;
+    }
+    int count;
+    in >> count;
+    in.ignore();
+    if (data.anbarItemsList)
+    {
+        delete[] data.anbarItemsList;
+    }
+    data.anbarItemsList = new Item[count];
+    data.itemsCount = count;
+    for (int i = 0; i < count; i++)
+    {
+        getline(in, data.anbarItemsList[i].name);
+        in >> data.anbarItemsList[i].price;
+        in.ignore();
+        in >> data.anbarItemsList[i].kiloo;
+        in.ignore();
+    }
+    in.close();
+    cout << "Data loaded from file successfully." << endl;
+}
 
 void initializeItems(myAnbarData &data)
 {
@@ -86,7 +139,7 @@ void deleteItems(myAnbarData &data)
     }
 }
 
-void addItem(const string &item, double price ,double kiloo , myAnbarData &data)
+void addItem(const string &item, double price, myAnbarData &data)
 {
     try
     {
@@ -126,6 +179,9 @@ void addItem(const string &item, double price ,double kiloo , myAnbarData &data)
             data.itemsCount++;
             cout << "Item " << item << " added successfully" << endl;
         }
+
+        // Save data to file after adding an item
+        saveDataToFile(data);
     }
     catch (const exception &e)
     {
@@ -169,9 +225,12 @@ void removeItem(const string &item, myAnbarData &data)
         cout << "Press 1 if you want to return the product, or any other number to continue: ";
         if (choice == 1)
         {
-            addItem(removed.name, removed.price, removed.kiloo , data);
+            addItem(removed.name, removed.price, data);
             cout << "Product " << removed.name << " restored successfully!" << endl;
         }
+
+        // save data to file after removing an item
+        saveDataToFile(data);
     }
     catch (exception &e)
     {
@@ -199,6 +258,9 @@ void renameItem(const string &oldName, const string &newName, myAnbarData &data)
         if (!found)
             throw invalid_argument("Item " + oldName + " not found.");
         cout << "Rename completed successfully." << endl;
+
+        // Save data to file after renaming an item
+        saveDataToFile(data);
     }
     catch (exception &e)
     {
@@ -226,6 +288,9 @@ void changePrice(myAnbarData &data, double newPrice, const string &name)
         }
         if (!found)
             throw invalid_argument("Item " + name + " not found.");
+
+        // Save data to file after changing the price of an item
+        saveDataToFile(data);
     }
     catch (exception &e)
     {
@@ -328,6 +393,9 @@ void buyItem(const string &itemName, myAnbarData &data, User people[], int userC
         }
         if (!userFound)
             throw invalid_argument("User " + username + " not found.");
+
+        // Save data to file after buying an item
+        saveDataToFile(data);
     }
     catch (exception &e)
     {
@@ -373,7 +441,7 @@ void help(const string &name)
         else if (name == "help")
             cout << "Provides help for available commands." << endl;
         else
-            throw invalid_argument("Help topic not recognized.");
+            throw invalid_argument("Help topic not found.");
     }
     catch (exception &e)
     {
@@ -385,13 +453,15 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
 {
     try
     {
+    	cout << "-------------------\n";
         cout << "\nAdmin Commands:\n"
              << "  add <item> <price>\n"
              << "  remove <item>\n"
              << "  rename <oldName> <newName>\n"
              << "  price <item> <newPrice>\n"
              << "  credit <amount> <user>\n"
-             << "Enter command: ";
+             << "  exit\n"
+             << "$ ";
         string command;
         cin >> command;
         if (command.empty())
@@ -401,11 +471,11 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
         {
             string item;
             double price;
-            double kiloo;
-            cin >> item >> price >> kiloo;
+            cin >> item >> price;
             if (item.empty())
                 throw invalid_argument("Item name cannot be empty.");
-            addItem(item, price,kiloo, data);
+            addItem(item, price, data);
+            showAdminMenu(inputN, people, size, data);
         }
         else if (command == "remove")
         {
@@ -414,6 +484,7 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
             if (item.empty())
                 throw invalid_argument("Item name cannot be empty.");
             removeItem(item, data);
+            showAdminMenu(inputN, people, size, data);
         }
         else if (command == "rename")
         {
@@ -422,6 +493,7 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
             if (oldName.empty() || newName.empty())
                 throw invalid_argument("Both old name and new name must be provided.");
             renameItem(oldName, newName, data);
+            showAdminMenu(inputN, people, size, data);
         }
         else if (command == "price")
         {
@@ -431,6 +503,7 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
             if (name.empty())
                 throw invalid_argument("Item name cannot be empty.");
             changePrice(data, newPrice, name);
+            showAdminMenu(inputN, people, size, data);
         }
         else if (command == "credit")
         {
@@ -440,10 +513,15 @@ void showAdminMenu(const string &inputN, User people[], int size, myAnbarData &d
             if (user.empty())
                 throw invalid_argument("User name cannot be empty.");
             credit(amount, user, people, size);
+            showAdminMenu(inputN, people, size, data);
+        }
+        if (command == "exit")
+        {
+        	return;
         }
         else
         {
-            throw invalid_argument("Command not recognized.");
+            throw invalid_argument("Command not found.");
         }
     }
     catch (exception &e)
@@ -456,12 +534,14 @@ void showUserMenu(const string &inputN, User people[], int size, myAnbarData &da
 {
     try
     {
+    	cout << "-----------------\n";
         cout << "\nUser Commands:\n"
              << "  show item\n"
              << "  buy item <name>\n"
              << "  balance\n"
              << "  help <command>\n"
-             << "Enter command: ";
+             << "  exit\n"
+             << "# ";
         string command;
         cin >> command;
         if (command.empty())
@@ -473,10 +553,23 @@ void showUserMenu(const string &inputN, User people[], int size, myAnbarData &da
             cin >> nextPart;
             if (nextPart.empty())
                 throw invalid_argument("Incomplete command for 'show'.");
-            if (nextPart == "item")
+            if (nextPart == "item"){
                 showItem(data);
+                showUserMenu(inputN, people, size, data);}
+            else if (nextPart != "item")
+            {
+            for (int i = 0; i < data.itemsCount; i++)
+            {
+            	if (data.anbarItemsList[i].name == nextPart)
+            	{
+                cout << "Found: " << data.anbarItemsList[i].name
+                     << ", Price: " << data.anbarItemsList[i].price << endl;
+            	}
+            }
+            	showUserMenu(inputN, people, size, data);
+            }
             else
-                throw invalid_argument("Sub-command for show not recognized.");
+                throw invalid_argument("Sub-command for show not found.");
         }
         else if (command == "buy")
         {
@@ -484,14 +577,16 @@ void showUserMenu(const string &inputN, User people[], int size, myAnbarData &da
             cin >> nextPart >> itemName;
             if (nextPart.empty() || itemName.empty())
                 throw invalid_argument("Incomplete command for 'buy'.");
-            if (nextPart == "item")
+            if (nextPart == "item"){
                 buyItem(itemName, data, people, size, inputN);
+                showUserMenu(inputN, people, size, data);}
             else
                 throw invalid_argument("Sub-command for buy not recognized.");
         }
         else if (command == "balance")
         {
             showBalance(inputN, people, size);
+            showUserMenu(inputN, people, size, data);
         }
         else if (command == "help")
         {
@@ -500,10 +595,15 @@ void showUserMenu(const string &inputN, User people[], int size, myAnbarData &da
             if (topic.empty())
                 throw invalid_argument("Help topic cannot be empty.");
             help(topic);
+            showUserMenu(inputN, people, size, data);
+        }
+        if (command == "exit")
+        {
+        	return;
         }
         else
         {
-            throw invalid_argument("Command not recognized.");
+            throw invalid_argument("Command not found.");
         }
     }
     catch (exception &e)
@@ -571,7 +671,17 @@ void startProgram()
     {
         myAnbarData anbar;
         createUsers(anbar.people);
-        initializeItems(anbar);
+        cout << "press 1 to load other to start new";	
+        int choice;
+        cin >> choice;
+        if (choice == 1)
+        {
+        	readDataFromFile(anbar);
+        }
+        else
+        {
+         	initializeItems(anbar);
+        }
         login(anbar.people, anbar.numberOfPeople, anbar);
     }
     catch (exception &e)
@@ -591,4 +701,4 @@ int main()
         cout << "Unhandled exception: " << e.what() << endl;
     }
     return 0;
-} 
+}
